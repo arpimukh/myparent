@@ -840,7 +840,7 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
             Relationship <span style={{ color: '#e53e3e' }}>*</span>
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginTop: '10px' }}>
-            {['Daughter', 'Son', 'Daughter-in-law', 'Son-in-law'].map((rel) => (
+            {['Daughter', 'Son', 'Daughter-in-law', 'Son-in-law', 'Other'].map((rel) => (
               <button
                 key={rel}
                 type="button"
