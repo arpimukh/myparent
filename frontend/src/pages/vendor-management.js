@@ -918,7 +918,7 @@ const fetchVendors = async () => {
             boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
           }}>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '25px', textAlign: 'center' }}>
-              Client Services Management
+              Current Client Service Queue 
             </h2>
 
             <div style={{
@@ -926,25 +926,27 @@ const fetchVendors = async () => {
               gridTemplateColumns: '0.8fr 1.5fr 1.5fr 1fr 1fr 1.5fr 1.2fr 1fr',
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
-              padding: '15px',
+              padding: '5px',
               borderRadius: '10px 10px 0 0',
               fontWeight: '600',
               fontSize: '12px'
             }}>
               <div>CLIENT ID</div>
               <div>CLIENT NAME</div>
-              <div>ACTIVE SERVICE</div>
-              <div>DAUGHTER NAME</div>
-              <div>DAUGHTER ID</div>
+              <div>SERVICE NAME</div>
+              <div>SERVICE DESCRIPTION[50 char]</div>
+              <div>WAITING DAYS</div>
+              <div>DAUGHTER NAME/ID</div>
+              <div>DAUGHTER CONTACT NO</div>
               <div>VENDOR NAME</div>
-              <div>CONTACT NUMBER</div>
+              <div>VENDOR CONTACT NO</div>
               <div>SERVICE STATUS</div>
             </div>
 
             {/* Loading State */}
             {isLoadingServices && (
               <div style={{
-                padding: '40px',
+                padding: '5px',
                 textAlign: 'center',
                 background: '#f7fafc',
                 borderRadius: '0 0 10px 10px'
@@ -959,7 +961,7 @@ const fetchVendors = async () => {
               <div key={index} style={{
                 display: 'grid',
                 gridTemplateColumns: '0.8fr 1.5fr 1.5fr 1fr 1fr 1.5fr 1.2fr 1fr',
-                padding: '15px',
+                padding: '5px',
                 borderBottom: '1px solid #f0f0f0',
                 alignItems: 'center',
                 background: index % 2 === 0 ? '#fafafa' : 'white',
@@ -968,8 +970,10 @@ const fetchVendors = async () => {
                 <div style={{ fontWeight: '600' }}>{service.clientId}</div>
                 <div style={{ fontWeight: '600' }}>{service.clientName}</div>
                 <div>{service.activeService}</div>
-                <div>{service.daughterName}</div>
-                <div style={{ fontWeight: '600' }}>{service.daughterId}</div>
+                <div>TV repair</div>
+                <div>5</div>
+                <div>{service.daughterName}-[{service.daughterId}]</div>
+                <div style={{ fontWeight: '600' }}>9999999999</div>
                 <div>{service.vendorName}</div>
                 <div>{service.contactNumber}</div>
                 <div>
@@ -980,10 +984,10 @@ const fetchVendors = async () => {
                       background: getStatusColor(service.serviceStatus),
                       color: 'white',
                       border: 'none',
-                      padding: '6px 12px',
+                      padding: '6px 5px',
                       borderRadius: '15px',
                       fontWeight: '600',
-                      fontSize: '11px',
+                      fontSize: '10px',
                       cursor: 'pointer'
                     }}
                   >
