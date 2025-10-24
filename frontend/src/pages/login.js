@@ -19,7 +19,7 @@ export default function LoginPage() {
     const dashboardRoutes = {
       'daughter': '/daughter-dashboard',
       'parent': '/parent-dashboard',
-      'vendor': '/vendor-management'
+      'vendor': '/vendor-dashboard'
     }
     
     // Redirect to dashboard based on role

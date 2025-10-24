@@ -457,7 +457,7 @@ const fetchVendors = async () => {
                 <div>VENDOR NAME</div>
                 <div>VENDOR ID</div>
                 <div>CONTACT NUMBER</div>
-                <div>VERIFIED [Y/N] </div>
+                <div>VERIFIED</div>
               </div>
 
               {filteredVendors.length === 0 ? (
@@ -541,7 +541,7 @@ const fetchVendors = async () => {
           {/* Header - Title in one line, no refresh button */}
           <div style={{ textAlign: 'center', color: 'white', marginBottom: '40px' }}>
             <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '10px' }}>
-              Vendor Management System
+              Vendor Dashboard
             </h1>
             <p style={{ fontSize: '1.1rem', opacity: '0.9' }}>
               Streamline your vendor relationships and service management with our comprehensive platform
@@ -659,7 +659,46 @@ const fetchVendors = async () => {
               </div>
             </div>
           )}
-
+           {/* Profile Information Card */}
+        <div style={{ background: 'white', borderRadius: '15px', padding: '30px', marginBottom: '30px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#2d3748', marginBottom: '25px' }}>
+            Profile Information
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px', background: '#f7fafc', padding: '25px', borderRadius: '10px' }}>
+            <div>
+              <div style={{ color: '#718096', fontSize: '12px', fontWeight: '600', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Profile Type
+              </div>
+              <div style={{ color: '#2d3748', fontSize: '16px', fontWeight: '600' }}>
+                Vendor
+              </div>
+            </div>
+            <div>
+              <div style={{ color: '#718096', fontSize: '12px', fontWeight: '600', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Vendor Name
+              </div>
+              <div style={{ color: '#2d3748', fontSize: '16px', fontWeight: '600' }}>
+                {loggedInVendor?.vendorName || 'N/A'}
+              </div>
+            </div>
+            <div>
+              <div style={{ color: '#718096', fontSize: '12px', fontWeight: '600', marginBottom: '8px', textTransform: 'uppercase' }}>
+                ID
+              </div>
+              <div style={{ color: '#2d3748', fontSize: '16px', fontWeight: '600' }}>
+                {loggedInVendor?.vendorId || 'N/A'}
+              </div>
+            </div>
+            <div>
+              <div style={{ color: '#718096', fontSize: '12px', fontWeight: '600', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Contact No
+              </div>
+              <div style={{ color: '#2d3748', fontSize: '16px', fontWeight: '600' }}>
+                {loggedInVendor?.phone || 'N/A'}
+              </div>
+            </div>
+          </div>
+        </div>
           {/* Search Vendors Section */}
           <div style={{
             background: 'white',
@@ -669,13 +708,13 @@ const fetchVendors = async () => {
             boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
           }}>
             <h2 style={{ textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold', color: '#333', marginBottom: '30px' }}>
-              Search Vendors
+              Search Clients
             </h2>
             
             <div style={{ display: 'flex', gap: '20px', alignItems: 'end', justifyContent: 'center', marginBottom: '20px' }}>
               <div style={{ flex: 1, maxWidth: '300px' }}>
                 <label style={{ display: 'block', fontSize: '14px', color: '#666', marginBottom: '8px', fontWeight: '600' }}>
-                  VENDOR NAME
+                  CLIENT NAME
                 </label>
                 <input
                   type="text"
@@ -746,169 +785,7 @@ const fetchVendors = async () => {
               </button>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
-              <button
-                onClick={handleAddNewVendor}
-                style={{
-                  background: '#4FC3F7',
-                  color: 'white',
-                  border: 'none',
-                  padding: '12px 24px',
-                  borderRadius: '25px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-              >
-                + ADD NEW VENDOR
-              </button>
-            </div>
-
-            {/* Vendors Table */}
-            <div style={{ marginTop: '30px' }}>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1.5fr 2fr 1fr 1.5fr 1fr',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                padding: '15px',
-                borderRadius: '10px 10px 0 0',
-                fontWeight: '600',
-                fontSize: '14px'
-              }}>
-                <div>SERVICE</div>
-                <div>VENDOR NAME</div>
-                <div>VENDOR ID</div>
-                <div>CONTACT NUMBER</div>
-                <div>VERIFIED</div>
-              </div>
-
-              {/* Loading State */}
-              {isLoadingVendors && (
-                <div style={{
-                  padding: '40px',
-                  textAlign: 'center',
-                  background: '#f7fafc',
-                  borderRadius: '0 0 10px 10px'
-                }}>
-                  <div style={{ fontSize: '24px', marginBottom: '10px' }}>⏳</div>
-                  <p style={{ color: '#718096' }}>Loading vendors...</p>
-                </div>
-              )}
-
-              {/* Error State */}
-              {vendorError && !isLoadingVendors && (
-                <div style={{
-                  padding: '40px',
-                  textAlign: 'center',
-                  background: '#fff5f5',
-                  borderRadius: '0 0 10px 10px',
-                  border: '2px solid #fc8181'
-                }}>
-                  <div style={{ fontSize: '24px', marginBottom: '10px' }}>⚠️</div>
-                  <p style={{ color: '#c53030', fontWeight: '600' }}>{vendorError}</p>
-                  <button
-                    onClick={fetchVendors}
-                    style={{
-                      marginTop: '15px',
-                      background: '#e53e3e',
-                      color: 'white',
-                      border: 'none',
-                      padding: '10px 20px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontWeight: '600'
-                    }}
-                  >
-                    Try Again
-                  </button>
-                </div>
-              )}
-
-              {/* No Vendors State */}
-              {!isLoadingVendors && !vendorError && filteredVendors.length === 0 && (
-                <div style={{
-                  padding: '40px',
-                  textAlign: 'center',
-                  background: '#f7fafc',
-                  borderRadius: '0 0 10px 10px'
-                }}>
-                  <div style={{ fontSize: '48px', marginBottom: '10px' }}>📦</div>
-                  <p style={{ color: '#718096', fontSize: '16px' }}>No vendors found</p>
-                </div>
-              )}
-
-              {/* Vendor Rows */}
-              {!isLoadingVendors && !vendorError && filteredVendors.map((vendor, index) => (
-                <div key={index} style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1.5fr 2fr 1fr 1.5fr 1fr',
-                  padding: '15px',
-                  borderBottom: '1px solid #f0f0f0',
-                  background: isLoggedInVendorRow(vendor.vendorId) 
-                    ? 'linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%)' 
-                    : (index % 2 === 0 ? '#fafafa' : 'white'),
-                  fontSize: '14px',
-                  fontWeight: isLoggedInVendorRow(vendor.vendorId) ? '700' : 'normal',
-                  border: isLoggedInVendorRow(vendor.vendorId) ? '2px solid #48bb78' : 'none',
-                  borderRadius: isLoggedInVendorRow(vendor.vendorId) ? '8px' : '0',
-                  marginBottom: isLoggedInVendorRow(vendor.vendorId) ? '2px' : '0',
-                  alignItems: 'center'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {isLoggedInVendorRow(vendor.vendorId) && <span>👤</span>}
-                    {vendor.service}
-                  </div>
-                  <div style={{ fontWeight: '600' }}>{vendor.vendorName}</div>
-                  <div style={{ fontWeight: '600' }}>{vendor.vendorId}</div>
-                  <div>{vendor.contactNumber}</div>
-                  <div>
-                    {vendor.isVerified ? (
-                      <span style={{
-                        background: '#c6f6d5',
-                        color: '#22543d',
-                        padding: '6px 12px',
-                        borderRadius: '15px',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                        display: 'inline-block'
-                      }}>
-                        ✓ Verified
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => openVerificationModal(vendor.vendorId, vendor.vendorName)}
-                        style={{
-                          background: '#ed8936',
-                          color: 'white',
-                          border: 'none',
-                          padding: '6px 12px',
-                          borderRadius: '8px',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Verify
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Showing results count */}
-            {!isLoadingVendors && !vendorError && filteredVendors.length > 0 && (
-              <div style={{
-                marginTop: '15px',
-                textAlign: 'center',
-                color: '#718096',
-                fontSize: '14px'
-              }}>
-                Showing {filteredVendors.length} of {vendors.length} vendors
-              </div>
-            )}
-          </div>
+           </div> 
 
           {/* Client Services Management Section */}
           <div style={{
@@ -938,8 +815,6 @@ const fetchVendors = async () => {
               <div>WAITING DAYS</div>
               <div>DAUGHTER NAME/ID</div>
               <div>DAUGHTER CONTACT NO</div>
-              <div>VENDOR NAME</div>
-              <div>VENDOR CONTACT NO</div>
               <div>SERVICE STATUS</div>
             </div>
 
@@ -974,8 +849,6 @@ const fetchVendors = async () => {
                 <div>5</div>
                 <div>{service.daughterName}-[{service.daughterId}]</div>
                 <div style={{ fontWeight: '600' }}>9999999999</div>
-                <div>{service.vendorName}</div>
-                <div>{service.contactNumber}</div>
                 <div>
                   <select
                     value={service.serviceStatus}
