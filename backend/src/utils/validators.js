@@ -12,7 +12,9 @@ const validateRegistration = {
       voter_id: Joi.string().max(20).allow(''),
       pan_number: Joi.string().pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).allow(''),
       medical_conditions: Joi.string().allow(''),
-      emergency_contact: Joi.string().allow('')
+      emergency_contact: Joi.string().allow(''),
+      parent_name: Joi.string().min(2).max(255).required(),
+      relationship: Joi.string().valid('daughter', 'son', 'daughter-in-law', 'son-in-law', 'other').required()
     });
     return schema.validate(data);
   },
@@ -26,9 +28,8 @@ const validateRegistration = {
       address: Joi.string().min(10).required(),
       aadhar_number: Joi.string().pattern(/^\d{4}\s\d{4}\s\d{4}$/).required(),
       voter_id: Joi.string().max(20).allow(''),
-      pan_number: Joi.string().pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).required(),
-      parent_name: Joi.string().min(2).max(255).required(),
-      relationship: Joi.string().valid('daughter', 'son', 'daughter-in-law', 'son-in-law', 'other').required()
+      pan_number: Joi.string().pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).required()
+      
     });
     return schema.validate(data);
   },

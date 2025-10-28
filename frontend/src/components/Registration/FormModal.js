@@ -19,9 +19,9 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
     medical_conditions: '',
     emergency_contact: '',
     
-    // Daughter-specific fields
-    parent_name: '',
-    relationship: '',
+    // // Daughter-specific fields
+    // parent_name: '',
+    // relationship: '',
     
     // Vendor-specific fields
     services: [],
@@ -146,11 +146,12 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
     // Role-specific validations
     if (selectedRole === 'parent') {
       if (!formData.aadhar.trim()) newErrors.aadhar = 'Aadhar number is required'
+      //  if (!formData.parent_name.trim()) newErrors.parent_name = 'Parent name is required'
+      // if (!formData.relationship) newErrors.relationship = 'Relationship is required'
     }
 
     if (selectedRole === 'daughter') {
-      if (!formData.parent_name.trim()) newErrors.parent_name = 'Parent name is required'
-      if (!formData.relationship) newErrors.relationship = 'Relationship is required'
+     
       if (!formData.pan.trim()) newErrors.pan = 'PAN number is required'
       if (!formData.aadhar.trim()) newErrors.aadhar = 'Aadhar number is required'
     }
@@ -255,8 +256,8 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
           submitData.append('medical_conditions', formData.medical_conditions || '')
           submitData.append('emergency_contact', formData.emergency_contact || '')
         } else if (selectedRole === 'daughter') {
-          submitData.append('parent_name', formData.parent_name)
-          submitData.append('relationship', formData.relationship)
+          // submitData.append('parent_name', formData.parent_name)
+          // submitData.append('relationship', formData.relationship)
         }
       }
 
@@ -283,7 +284,7 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
         // Reset form
         setFormData({
           name: '', phone: '', email: '', password: '', confirmPassword: '', address: '', aadhar: '', voter_id: '', pan: '', photo: null, identity_doc: null,
-          medical_conditions: '', emergency_contact: '', parent_name: '', relationship: '',
+          medical_conditions: '', emergency_contact: '', 
           services: [], service_description: '', gst_number: ''
         })
         setPhotoPreview(null)
@@ -827,12 +828,12 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
             placeholder="Emergency contact name"
             style={{
               width: '100%', padding: '12px 15px',
-              border: `2px solid ${errors.parent_name ? '#e53e3e' : '#e2e8f0'}`,
+              border: `2px solid ${errors.name ? '#e53e3e' : '#e2e8f0'}`,
               borderRadius: '8px', fontSize: '16px', background: '#f7fafc', outline: 'none'
             }}
             required
           />
-          {errors.parent_name && <span style={{ color: '#e53e3e', fontSize: '12px' }}>{errors.parent_name}</span>}
+          {errors.name && <span style={{ color: '#e53e3e', fontSize: '12px' }}>{errors.name}</span>}
         </div>
 
         <div>

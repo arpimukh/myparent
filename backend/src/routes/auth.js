@@ -63,8 +63,8 @@ const registrationValidation = [
   body('pan').optional().matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).withMessage('Invalid PAN format'),
   
   // Conditional validations based on role
-  body('parent_name').if(body('role').equals('daughter')).notEmpty().withMessage('Parent name is required for daughter registration'),
-  body('relationship').if(body('role').equals('daughter')).isIn(['daughter', 'son', 'daughter-in-law', 'son-in-law', 'other']).withMessage('Invalid relationship'),
+ // body('parent_name').if(body('role').equals('daughter')).notEmpty().withMessage('Parent name is required for daughter registration'),
+//  body('relationship').if(body('role').equals('daughter')).isIn(['daughter', 'son', 'daughter-in-law', 'son-in-law', 'other']).withMessage('Invalid relationship'),
   
   // NEW: Vendor-specific validations
   body('services').if(body('role').equals('vendor')).notEmpty().withMessage('At least one service must be selected for vendor registration'),
