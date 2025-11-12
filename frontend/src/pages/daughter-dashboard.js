@@ -24,20 +24,20 @@ const DaughterDashboard = () => {
   const fetchDashboardData = async (userId) => {
     try {
       // Fetch parents
-      const parentsRes = await fetch(`http://localhost:5001/api/daughter/${userId}/parents`)
+      const parentsRes = await fetch(`http://localhost:5001/api/dashboard/daughter/${userId}/parents`)
       const parentsData = await parentsRes.json()
       
       if (parentsData.success) {
         setParents(parentsData.data || [])
       }
 
-      // Fetch services
-      const servicesRes = await fetch(`http://localhost:5001/api/daughter/${userId}/services`)
-      const servicesData = await servicesRes.json()
+     // Fetch services
+     const servicesRes = await fetch(`http://localhost:5001/api/dashboard/daughter/${userId}/services`)
+     const servicesData = await servicesRes.json()
       
-      if (servicesData.success) {
-        setServices(servicesData.data || [])
-      }
+     if (servicesData.success) {
+       setServices(servicesData.data || [])
+     }
 
       setLoading(false)
     } catch (error) {
@@ -175,6 +175,9 @@ const DaughterDashboard = () => {
         {/* <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '15px' }}>*/}
               <button onClick={() => router.push('/vendor-management')} style={{ background: '#48bb78', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}>
                 CHECK VENDOR LIST
+              </button>
+              <button onClick={() => router.push('/vendor-management')} style={{ background: '#48bb78', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}>
+                AADD/UPDATE VENDOR
               </button>
          </div>     
           <div style={{ overflowX: 'auto' }}>

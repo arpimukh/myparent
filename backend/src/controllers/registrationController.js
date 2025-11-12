@@ -112,9 +112,9 @@ const registrationController = {
       } else if (userData.role === 'daughter') {
         console.log('Saving daughter-specific data...')
         await pool.execute(
-          'INSERT INTO daughters (user_id, name, contact_no, email) VALUES (?)',
-            [newUser.id]
-          //'INSERT INTO daughters (user_id, name, contact_no, email) VALUES (?, ?, ?, ?)',
+          'INSERT INTO daughters (user_id, name, contact_no, email,adhar_no,voter_no,pan_no) VALUES (?,?,?,?,?,?,?)',
+            [newUser.id, userData.name,userData.phone, userData.email, userData.aadhar || null, userData.voter_id || null, userData.pan || null]
+          //'INSERT INTO daughters (user_id, name, contact_no, email) VALUES (?, ?, ?, ?,?)',
           //[newUser.id, userData.name,userData.contact_no, userData.email]
         )
         console.log('Daughter data saved')

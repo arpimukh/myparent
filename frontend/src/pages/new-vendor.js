@@ -6,6 +6,7 @@ export default function NewVendor() {
     name: '',
     contactNumber: '',
     email: '',
+    services:'',
     Description: ''
   })
   const [submitted, setSubmitted] = useState(false)

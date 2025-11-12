@@ -3,13 +3,13 @@ const { pool } = require('../config/database');
 // Register a new vendor
 const registerVendor = async (req, res) => {
   try {
-    const { name, contactNumber, email, serviceDescription } = req.body
+    const { name, contactNumber, email, services, serviceDescription } = req.body
 
     // Validation
-    if (!name || !contactNumber || !serviceDescription) {
+    if (!name || !contactNumber || !services|| !serviceDescription) {
       return res.status(400).json({
         success: false,
-        message: 'Name, contact number, and service description are required'
+        message: 'Name, contact number, services and service description are required'
       })
     }
 
@@ -32,14 +32,15 @@ const registerVendor = async (req, res) => {
     // Insert data into vendor_registrations table
     const query = `
       INSERT INTO vendor_registrations 
-      (name, contact_number, email, service_description, created_at) 
-      VALUES (?, ?, ?, ?, NOW())
+      (name, contact_number, email, service_type, service_description, created_at) 
+      VALUES (?, ?, ?,?, ?, NOW())
     `
 
     const [result] = await pool.execute(query, [
       name,
       contactNumber,
       email || null,
+      services,
       serviceDescription
     ])
 
@@ -52,6 +53,7 @@ const registerVendor = async (req, res) => {
         name,
         contactNumber,
         email: email || null,
+        services,
         serviceDescription
       }
     })

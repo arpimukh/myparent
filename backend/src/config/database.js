@@ -16,6 +16,7 @@ const pool = mysql.createPool(dbConfig)
 const initializeDatabase = async () => {
   try {
     const connection = await pool.getConnection()
+    connection.setOptions({ ATTR_EMULATE_PREPARES : true })
     console.log('Connected to MySQL successfully')
     console.log('Using database:', dbConfig.database)
     

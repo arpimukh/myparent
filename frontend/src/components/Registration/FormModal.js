@@ -152,7 +152,7 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
 
     if (selectedRole === 'daughter') {
      
-      if (!formData.pan.trim()) newErrors.pan = 'PAN number is required'
+      //if (!formData.pan.trim()) newErrors.pan = 'PAN number is required'
       if (!formData.aadhar.trim()) newErrors.aadhar = 'Aadhar number is required'
     }
 
@@ -246,6 +246,7 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
         submitData.append('aadhar', formData.aadhar)
         submitData.append('voter_id', formData.voter_id || '')
         submitData.append('pan', formData.pan || '')
+         submitData.append('services', formData.services || '')
 
         if (formData.photo) {
           submitData.append('photo', formData.photo)
@@ -753,7 +754,7 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
 
       <div>
         <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#4a5568', fontSize: '14px' }}>
-          PAN Number {requirePan && <span style={{ color: '#e53e3e' }}>*</span>}
+          PAN Number  {/* {requirePan && <span style={{ color: '#e53e3e' }}>*</span>} */}
         </label>
         <input
           type="text"
@@ -767,9 +768,9 @@ const FormModal = ({ isOpen, onClose, selectedRole }) => {
             border: `2px solid ${errors.pan ? '#e53e3e' : '#e2e8f0'}`,
             borderRadius: '8px', fontSize: '16px', background: '#f7fafc', outline: 'none'
           }}
-          required={requirePan}
+          // required={requirePan}
         />
-        {errors.pan && <span style={{ color: '#e53e3e', fontSize: '12px' }}>{errors.pan}</span>}
+        {/* {errors.pan && <span style={{ color: '#e53e3e', fontSize: '12px' }}>{errors.pan}</span>} */}
       </div>
     </>
   )

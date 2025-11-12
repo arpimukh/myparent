@@ -202,9 +202,9 @@ router.post('/register',
       // Insert into vendors table with identity_doc_path
       await connection.execute(
         `INSERT INTO vendors 
-         (user_id, services, service_description, gst_number, identity_doc_path, is_verified) 
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [userId, JSON.stringify(servicesArray), service_description || null, gst_number || null, identityDocPath, false]
+         (user_id, business_name, services, service_description, gst_number, identity_doc_path, is_verified,adhar_no, voter_no, pan_no) 
+         VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)`,
+        [userId,name, JSON.stringify(servicesArray), service_description || null, gst_number || null, identityDocPath, false,aadhar || null, voter_id || null, pan]
       )
 
       console.log('Vendor details saved')
@@ -375,7 +375,7 @@ router.get('/:id', async (req, res) => {
       `SELECT u.id, u.role, u.name, u.phone, u.email, u.address, 
               u.aadhar, u.voter_id, u.pan, u.photo_path, u.status, u.created_at,
               v.services, v.service_description, v.gst_number, v.identity_doc_path,
-              v.is_verified, v.verification_doc_path, v.verified_at
+              v.is_verified, v.verification_doc_path
        FROM users u
        LEFT JOIN vendors v ON u.id = v.user_id
        WHERE u.id = ? AND u.role = 'vendor'`,
@@ -420,7 +420,7 @@ router.get('/', async (req, res) => {
     const { status, service } = req.query
     let query = `
       SELECT u.id as vendor_id, u.name, u.phone, u.email, u.address, u.status, u.created_at,
-             v.services, v.service_description, v.is_verified, v.verified_at
+             v.services, v.service_description, v.is_verified
       FROM users u
       LEFT JOIN vendors v ON u.id = v.user_id
       WHERE u.role = 'vendor'

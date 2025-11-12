@@ -23,7 +23,7 @@ router.get('/daughter/:id/profile', async (req, res) => {
     
     // Get daughter info with relationship details
     const [daughterRows] = await pool.execute(`
-      SELECT u.*, d.parent_name, d.relationship 
+      SELECT u.*, d.name
       FROM users u
       LEFT JOIN daughters d ON u.id = d.user_id
       WHERE u.id = ? AND u.role = 'daughter'
@@ -76,125 +76,125 @@ router.get('/daughter/:id', async (req, res) => {
   }
 })
 
-// Get parents associated with daughter
-router.get('/daughter/:id/parents', async (req, res) => {
-  try {
-    const { id } = req.params
+// // Get parents associated with daughter
+// router.get('/daughter/:id/parents', async (req, res) => {
+//   try {
+//     const { id } = req.params
     
-    // First check if parent_daughter_relationships table exists and has data
-    const [relationshipCheck] = await pool.execute(`
-      SELECT COUNT(*) as count 
-      FROM parent_daughter_relationships 
-      WHERE daughter_id = ?
-    `, [id])
+//     // First check if parent_daughter_relationships table exists and has data
+//     const [relationshipCheck] = await pool.execute(`
+//       SELECT COUNT(*) as count 
+//       FROM parent_daughter_relationships 
+//       WHERE daughter_id = ?
+//     `, [id])
     
-    let rows
+//     let rows
     
-    if (relationshipCheck[0].count > 0) {
-      // If relationships exist, use them
-      [rows] = await pool.execute(`
-        SELECT u.id, u.name, u.phone, u.photo_path,
-               'Home Care Services' as active_service 
-        FROM users u 
-        JOIN parent_daughter_relationships pdr ON u.id = pdr.parent_id 
-        WHERE pdr.daughter_id = ? AND u.role = 'parent'
-      `, [id])
-    } else {
-      // Otherwise, return all parents as sample data (for testing)
-      [rows] = await pool.execute(`
-        SELECT u.id, u.name, u.phone, u.photo_path,
-               'Home Care Services' as active_service 
-        FROM users u 
-        WHERE u.role = 'parent'
-        LIMIT 5
-      `)
-    }
+//     if (relationshipCheck[0].count > 0) {
+//       // If relationships exist, use them
+//       [rows] = await pool.execute(`
+//         SELECT u.id, u.name, u.phone, u.photo_path,
+//                'Home Care Services' as active_service 
+//         FROM users u 
+//         JOIN parent_daughter_relationships pdr ON u.id = pdr.parent_id 
+//         WHERE pdr.daughter_id = ? AND u.role = 'parent'
+//       `, [id])
+//     } else {
+//       // Otherwise, return all parents as sample data (for testing)
+//       [rows] = await pool.execute(`
+//         SELECT u.id, u.name, u.phone, u.photo_path,
+//                'Home Care Services' as active_service 
+//         FROM users u 
+//         WHERE u.role = 'parent'
+//         LIMIT 5
+//       `)
+//     }
     
-    // Format data for dashboard
-    const parents = rows.map(parent => ({
-      clientId: `CL${String(parent.id).padStart(3, '0')}`,
-      clientPhoto: parent.photo_path,
-      clientName: parent.name,
-      contactNo: parent.phone,
-      activeService: parent.active_service
-    }))
+//     // Format data for dashboard
+//     const parents = rows.map(parent => ({
+//       clientId: `CL${String(parent.id).padStart(3, '0')}`,
+//       clientPhoto: parent.photo_path,
+//       clientName: parent.name,
+//       contactNo: parent.phone,
+//       activeService: parent.active_service
+//     }))
     
-    res.json({ success: true, data: parents })
-  } catch (error) {
-    console.error('Get parents error:', error)
-    res.status(500).json({ success: false, message: error.message })
-  }
-})
+//     res.json({ success: true, data: parents })
+//   } catch (error) {
+//     console.error('Get parents error:', error)
+//     res.status(500).json({ success: false, message: error.message })
+//   }
+// })
 
-// Get active services for daughter
-router.get('/daughter/:id/services', async (req, res) => {
-  try {
-    const { id } = req.params
+// // Get active services for daughter
+// router.get('/daughter/:id/services', async (req, res) => {
+//   try {
+//     const { id } = req.params
     
-    // Check if service_assignments table exists
-    const [tableCheck] = await pool.execute(`
-      SELECT COUNT(*) as count 
-      FROM information_schema.tables 
-      WHERE table_schema = DATABASE() 
-      AND table_name = 'service_assignments'
-    `)
+//     // Check if service_assignments table exists
+//     const [tableCheck] = await pool.execute(`
+//       SELECT COUNT(*) as count 
+//       FROM information_schema.tables 
+//       WHERE table_schema = DATABASE() 
+//       AND table_name = 'service_assignments'
+//     `)
     
-    let services = []
+//     let services = []
     
-    if (tableCheck[0].count > 0) {
-      // If table exists, query it
-      const [rows] = await pool.execute(`
-        SELECT sa.*, 
-               u1.name as client_name, 
-               u1.phone as client_contact,
-               u1.id as client_id,
-               u2.name as vendor_name, 
-               u2.phone as vendor_contact
-        FROM service_assignments sa
-        JOIN users u1 ON sa.client_id = u1.id
-        LEFT JOIN users u2 ON sa.vendor_id = u2.id
-        WHERE sa.daughter_id = ?
-      `, [id])
+//     if (tableCheck[0].count > 0) {
+//       // If table exists, query it
+//       const [rows] = await pool.execute(`
+//         SELECT sa.*, 
+//                u1.name as client_name, 
+//                u1.phone as client_contact,
+//                u1.id as client_id,
+//                u2.name as vendor_name, 
+//                u2.phone as vendor_contact
+//         FROM service_assignments sa
+//         JOIN users u1 ON sa.client_id = u1.id
+//         LEFT JOIN users u2 ON sa.vendor_id = u2.id
+//         WHERE sa.daughter_id = ?
+//       `, [id])
       
-      services = rows.map(service => ({
-        clientId: `CL${String(service.client_id).padStart(3, '0')}`,
-        clientName: service.client_name,
-        contactNo: service.client_contact,
-        activeService: service.service_type || 'Home Care Services',
-        vendorName: service.vendor_name || '-',
-        vendorContactNo: service.vendor_contact || '-',
-        serviceStatus: service.status || 'Active'
-      }))
-    } else {
-      // Return sample/mock data for testing
-      services = [
-        {
-          clientId: 'CL001',
-          clientName: 'Sample Parent 1',
-          contactNo: '+1-555-0001',
-          activeService: 'Home Care Services',
-          vendorName: 'Compassionate Care Partners',
-          vendorContactNo: '+1-555-CARE-001',
-          serviceStatus: 'Active'
-        },
-        {
-          clientId: 'CL002',
-          clientName: 'Sample Parent 2',
-          contactNo: '+1-555-0002',
-          activeService: 'Physical Therapy',
-          vendorName: '-',
-          vendorContactNo: '-',
-          serviceStatus: 'Assign'
-        }
-      ]
-    }
+//       services = rows.map(service => ({
+//         clientId: `CL${String(service.client_id).padStart(3, '0')}`,
+//         clientName: service.client_name,
+//         contactNo: service.client_contact,
+//         activeService: service.service_type || 'Home Care Services',
+//         vendorName: service.vendor_name || '-',
+//         vendorContactNo: service.vendor_contact || '-',
+//         serviceStatus: service.status || 'Active'
+//       }))
+//     } else {
+//       // Return sample/mock data for testing
+//       services = [
+//         {
+//           clientId: 'CL001',
+//           clientName: 'Sample Parent 1',
+//           contactNo: '+1-555-0001',
+//           activeService: 'Home Care Services',
+//           vendorName: 'Compassionate Care Partners',
+//           vendorContactNo: '+1-555-CARE-001',
+//           serviceStatus: 'Active'
+//         },
+//         {
+//           clientId: 'CL002',
+//           clientName: 'Sample Parent 2',
+//           contactNo: '+1-555-0002',
+//           activeService: 'Physical Therapy',
+//           vendorName: '-',
+//           vendorContactNo: '-',
+//           serviceStatus: 'Assign'
+//         }
+//       ]
+//     }
     
-    res.json({ success: true, data: services })
-  } catch (error) {
-    console.error('Get services error:', error)
-    res.status(500).json({ success: false, message: error.message })
-  }
-})
+//     res.json({ success: true, data: services })
+//   } catch (error) {
+//     console.error('Get services error:', error)
+//     res.status(500).json({ success: false, message: error.message })
+//   }
+// })
 
 // Get all vendors (with optional filters)
 router.get('/vendors', async (req, res) => {
