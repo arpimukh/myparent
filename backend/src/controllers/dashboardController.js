@@ -20,12 +20,15 @@ const dashboardController = {
       }
       
       // Get parents associated with this daughter
-      const [parentsData] = await pool.execute(`
-        SELECT u.*, p.medical_conditions, p.emergency_contact 
-        FROM users u 
-        LEFT JOIN parents p ON u.id = p.user_id 
-        WHERE u.role = "parent"
-      `)
+      const [parentsData] = await pool.execute(
+        `SELECT  p.user_id as clientId,p.name as clientName, p.phone as contactNo,IFNULL(c1.count,0) as activeService,
+      p.medical_conditions as notes, p.address from 
+      ( SELECT c.client_id, count(1) as count FROM parent_care_services.client_services c 
+        WHERE  c.daughter_id = ? GROUP BY c.client_id) as c1 right outer join parent_care_services.parents p
+          on p.user_id=c1.client_id where p.daughter_id=? LIMIT 5
+       `, [id])
+        //'SELECT u.*, p.medical_conditions, p.emergency_contact FROM users u , parents p WHERE u.daughter_id = p.user_id', 
+         //[id])
       
       res.json({
         success: true,

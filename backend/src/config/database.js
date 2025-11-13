@@ -16,11 +16,12 @@ const pool = mysql.createPool(dbConfig)
 const initializeDatabase = async () => {
   try {
     const connection = await pool.getConnection()
+    connection.setOptions({ ATTR_EMULATE_PREPARES : true })
     console.log('Connected to MySQL successfully')
     console.log('Using database:', dbConfig.database)
     
     // Create tables if they don't exist (using IF NOT EXISTS to avoid errors)
-    await connection.execute(`
+   /* await connection.execute(`
       CREATE TABLE IF NOT EXISTS users (
         id INT PRIMARY KEY AUTO_INCREMENT,
         role ENUM('parent', 'daughter', 'vendor') NOT NULL,
@@ -58,8 +59,8 @@ const initializeDatabase = async () => {
       CREATE TABLE IF NOT EXISTS daughters (
         id INT PRIMARY KEY AUTO_INCREMENT,
         user_id INT UNIQUE NOT NULL,
-        parent_name VARCHAR(255) NOT NULL,
-        relationship ENUM('daughter', 'son', 'daughter-in-law', 'son-in-law', 'other') NOT NULL,
+        {/* parent_name VARCHAR(255) NOT NULL,
+        relationship ENUM('daughter', 'son', 'daughter-in-law', 'son-in-law', 'other') NOT NULL, *
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
@@ -116,7 +117,7 @@ const initializeDatabase = async () => {
     // =====================================================
 
     connection.release()
-    console.log('✅ Database tables initialized successfully')
+    console.log('✅ Database tables initialized successfully') */
     
   } catch (error) {
     console.error('❌ Database initialization error:', error)

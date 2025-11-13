@@ -60,11 +60,11 @@ const registrationValidation = [
   body('phone').isMobilePhone('en-IN').withMessage('Invalid phone number'),
   body('address').trim().isLength({ min: 10 }).withMessage('Address must be at least 10 characters'),
   body('aadhar').matches(/^\d{4}\s\d{4}\s\d{4}$/).withMessage('Invalid Aadhar format (XXXX XXXX XXXX)'),
-  body('pan').optional().matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).withMessage('Invalid PAN format'),
-  
+  body('pan').optional().matches(/^$|^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).withMessage('Invalid PAN format'),
+   body('voter_id').optional().matches(/^$|^[a-zA-Z0-9]{10}$/).withMessage('Invalid Voter ID format'),
   // Conditional validations based on role
-  body('parent_name').if(body('role').equals('daughter')).notEmpty().withMessage('Parent name is required for daughter registration'),
-  body('relationship').if(body('role').equals('daughter')).isIn(['daughter', 'son', 'daughter-in-law', 'son-in-law', 'other']).withMessage('Invalid relationship'),
+ // body('parent_name').if(body('role').equals('daughter')).notEmpty().withMessage('Parent name is required for daughter registration'),
+//  body('relationship').if(body('role').equals('daughter')).isIn(['daughter', 'son', 'daughter-in-law', 'son-in-law', 'other']).withMessage('Invalid relationship'),
   
   // NEW: Vendor-specific validations
   body('services').if(body('role').equals('vendor')).notEmpty().withMessage('At least one service must be selected for vendor registration'),

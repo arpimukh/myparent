@@ -20,7 +20,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         message: 'Invalid token.'
-      })
+      }) 
     }
 
     req.user = user

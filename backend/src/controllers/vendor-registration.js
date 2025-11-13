@@ -10,10 +10,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, contactNumber, email, serviceDescription } = req.body
+    const { name, contactNumber, email, services,serviceDescription } = req.body
 
     // Validation
-    if (!name || !contactNumber || !serviceDescription) {
+    if (!name || !contactNumber ||!services || !serviceDescription) {
       return res.status(400).json({ 
         success: false, 
         message: 'Name, contact number, and service description are required' 
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     // Insert data into vendor_registrations table
     const query = `
       INSERT INTO vendor_registrations 
-      (name, contact_number, email, service_description, created_at) 
+      (name, contact_number, email, service_type, service_description, created_at) 
       VALUES (?, ?, ?, ?, NOW())
     `
 
@@ -47,6 +47,7 @@ export default async function handler(req, res) {
       name,
       contactNumber,
       email || null,
+      services,
       serviceDescription
     ])
 
@@ -59,6 +60,7 @@ export default async function handler(req, res) {
         name,
         contactNumber,
         email: email || null,
+        services
         serviceDescription
       }
     })

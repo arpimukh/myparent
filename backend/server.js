@@ -8,6 +8,9 @@ const authRoutes = require('./src/routes/auth')
 const userRoutes = require('./src/routes/users')
 const vendorRoutes = require('./src/routes/vendorRoutes')
 const vendorDetailsRoutes = require('./src/routes/vendorDetailsRoutes') // ⭐ NEW LINE 1
+const dashboardRoutes = require('./src/routes/dashboard') // Dashboard routes
+//const userProfileRoutes = require('./src/routes/userProfileRoutes') // User profile routes
+
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -37,7 +40,9 @@ app.use('/uploads', express.static('uploads'))
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/vendors', vendorRoutes)
-app.use('/api/vendor-details', vendorDetailsRoutes) // ⭐ NEW LINE 2
+app.use('/api/vendor-details', vendorDetailsRoutes),
+app.use('/api/dashboard', dashboardRoutes)
+ // ⭐ NEW LINE 2
 
 // Health check
 app.get('/health', (req, res) => {
